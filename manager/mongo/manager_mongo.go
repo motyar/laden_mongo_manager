@@ -12,13 +12,13 @@ import (
 )
 
 type rdbSchema struct {
-	ID          string          `json:"id" gorethink:"id"`
-	Description string          `json:"description" gorethink:"description"`
-	Subjects    []string        `json:"subjects" gorethink:"subjects"`
-	Effect      string          `json:"effect" gorethink:"effect"`
-	Resources   []string        `json:"resources" gorethink:"resources"`
-	Actions     []string        `json:"actions" gorethink:"actions"`
-	Conditions  json.RawMessage `json:"conditions" gorethink:"conditions"`
+	ID          string          `json:"id"`
+	Description string          `json:"description"`
+	Subjects    []string        `json:"subjects"`
+	Effect      string          `json:"effect"`
+	Resources   []string        `json:"resources"`
+	Actions     []string        `json:"actions"`
+	Conditions  json.RawMessage `json:"conditions"`
 }
 
 func rdbToPolicy(s *rdbSchema) (*DefaultPolicy, error) {
@@ -56,7 +56,7 @@ func rdbFromPolicy(p Policy) (*rdbSchema, error) {
 	}, err
 }
 
-// NewRethinkManager initializes a new RethinkManager for given session, table name defaults
+// NewMongoManager initializes a new MongoManager for given session, table name defaults
 // to "policies".
 func NewMongoManager(collection *mgo.Collection) *MongoManager {
 	// ensure we can query fast on the policy id
@@ -73,7 +73,7 @@ func NewMongoManager(collection *mgo.Collection) *MongoManager {
 	}
 }
 
-// MongoManager is a rethinkdb implementation of Manager to store policies persistently.
+// MongoManager is a mongodb implementation of Manager to store policies persistently.
 type MongoManager struct {
 	Collection *mgo.Collection
 	sync.RWMutex
@@ -106,7 +106,7 @@ func (m *MongoManager) GetAll(limit, offset int64) (Policies, error) {
 	return ps, nil
 }
 
-// ColdStart loads all policies from rethinkdb into memory.
+// ColdStart loads all policies from mongodb into memory.
 func (m *MongoManager) ColdStart() error {
 
 	policies, err := m.GetAll(10, 0)

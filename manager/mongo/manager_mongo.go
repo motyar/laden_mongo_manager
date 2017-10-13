@@ -56,8 +56,7 @@ func rdbFromPolicy(p Policy) (*rdbSchema, error) {
 	}, err
 }
 
-// NewMongoManager initializes a new MongoManager for given session, table name defaults
-// to "policies".
+// NewMongoManager initializes a new MongoManager for given session.
 func NewMongoManager(collection *mgo.Collection) *MongoManager {
 	// ensure we can query fast on the policy id
 	// TODO: we might want to unforce this less frequent
